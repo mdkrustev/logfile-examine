@@ -14,7 +14,10 @@ COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /var/www/html
 
 # Copy the PHP application files from the host to the container
-COPY ./src/ .
+COPY ./logfiles/ ./logfiles
+COPY ./src/ ./src
+COPY ./public/ ./public
+COPY ./resources/ ./resources
 
 # Expose the necessary ports
 EXPOSE 80
@@ -29,7 +32,10 @@ FROM nginx:latest
 COPY default.conf /etc/nginx/sites-available/default.conf
 
 # Copy the PHP application files from the host to the container
+COPY ./logfiles/ /usr/share/nginx/html/logfiles/
 COPY ./src/ /usr/share/nginx/html/src/
+COPY ./public/ /usr/share/nginx/html/public/
+COPY ./resources/ /usr/share/nginx/html/resources/
 
 # Expose the necessary port
 EXPOSE 80

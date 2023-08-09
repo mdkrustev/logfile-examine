@@ -3,53 +3,51 @@
 
 class DisplayData
 {
-    public static function showResults($data, $tableHeaders = ['key', 'value'], $type = 'html')
+    public static function showResults($title, $description, $data, $tableHeaders = ['key', 'value'], $type = 'html', $style = null, $keyAsUri = false)
     {
         switch ($type) {
             case 'html':
-            self::htmlTable($data, $tableHeaders);
-            break;
+                echo "<style>$style</style>";
+                echo '<div class="results">';
+                if ($title) {
+                    echo '<div class="title"><a href="/">Tasks</a> - ' . $title . '</div>';
+                } else {
+                    echo '<div class="title">Tasks</div>';
+                }
+                echo '<p class="description">' . $description . '</p>';
+                echo self::htmlTable($data, $tableHeaders, $keyAsUri);
+                echo '</div>';
+                break;
             case 'json':
                 self::asJson($data);
                 break;
         }
+        exit;
     }
 
-    public static function htmlTable($data, $tableHeaders = ['key', 'value'])
+    public static function htmlTable($data, $tableHeaders = ['key', 'value'], $keyAsUri = false)
     {
-        $html = "<style>
-                    table {border: 1px solid #000; border-collapse: collapse; width: 100%; max-width: 991px; font-family: Arial, sans-serif}
-                    th, td {
-                        border: 1px solid black;
-                        padding: 8px;
-                        text-align: left;
-                    }
-                    th {
-                        background: #000;
-                        color: #fff;
-                    }
-                 </style>";
-        // Create an HTML table
-        $html .= "<table>";
-        $html .= "<tr>";
-        foreach ($tableHeaders as $th) {
-            $html .= "<th>" . $th . "</th>";
-        }
-        $html .= "</tr>";
 
+        // Create an HTML table
+        $html = "<table>";
+        $html .= "<tr>";
+        foreach ($tableHeaders as $th)
+            $html .= "<th>" . $th . "</th>";
+        $html .= "</tr>";
         foreach ($data as $key => $value) {
             $html .= "<tr>";
-            $html .= "<td>$key</td>";
+            $tdKey = $keyAsUri ? '<a href="/' . $key . '">'.$key.'</a>' : $key;
+            $html .= "<td>$tdKey</td>";
             $html .= "<td>$value</td>";
             $html .= "</tr>";
         }
         $html .= "</table>";
-        echo $html;
-        exit;
+        return $html;
     }
-    public static function asJson($data) {
-        header('Content-type: application/json');
+
+    public static function asJson($data)
+    {
+        header('Content-Type: application/json');
         echo json_encode($data);
-        exit;
     }
 }

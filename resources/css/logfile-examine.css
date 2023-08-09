@@ -1,0 +1,51 @@
+body {
+    background: #f1f1f1;
+}
+
+a {
+    font-size: 20px;
+    color: #666666;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000000;
+}
+
+.results {
+    width: 100%;
+    max-width: 991px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif
+}
+
+.results .title {
+    text-align: center;
+    padding: 20px 0 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.results .description {
+    font-size: 15px;
+    text-align: center;
+}
+
+table {
+    border: 1px solid #000;
+    border-collapse: collapse;
+    width: 100%;
+    background: #ffffff;
+    font-size: 15px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background: #000;
+    color: #fff;
+}

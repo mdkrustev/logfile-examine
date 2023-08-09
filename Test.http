@@ -1,3 +1,10 @@
-#Test request;
+#Task 1
+GET http://localhost:8080/task1-json
+Accept: application/json
 
-http://localhost:8080/task1-json
+###
+
+#Task 2
+GET http://localhost:8080/task2-json
+Accept: application/json
+
