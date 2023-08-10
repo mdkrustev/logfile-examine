@@ -1,5 +1,9 @@
 <?php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+define("PROJECT_ROOT", $_SERVER['DOCUMENT_ROOT'] . '/../');
 
 $tasks = [
     // Task 1
@@ -18,25 +22,31 @@ $tasks = [
     active on these types of hardware.",
 ];
 
-$project_root = $_SERVER['DOCUMENT_ROOT'] . '/../';
+
+
+const SPECS = 12;
+const SERIAL = 10;
+
+
 
 //Loading the css style from resources
-$style = file_get_contents($project_root . 'resources/css/logfile-examine.css');
+$style = file_get_contents(PROJECT_ROOT . 'resources/css/logfile-examine.css');
 
-require $project_root . 'src/service/DisplayData.php';
-require $project_root . 'src/service/LogfileData.php';
+require PROJECT_ROOT . 'src/service/DisplayData.php';
+require PROJECT_ROOT . 'src/service/LogfileData.php';
+require PROJECT_ROOT . 'src/service/LogicService.php';
 
 $uri = $_SERVER['REQUEST_URI'];
 
 //Request a different task by calling a different URL
 switch ($uri) {
     case '/':
-        require_once $project_root . 'src/tasks/default.php';
+        require_once PROJECT_ROOT . 'src/tasks/default.php';
         break;
     default:
         foreach ($tasks as $task => $description) {
             if ($uri == "/$task" || $uri == "/$task-json")
-                require_once $project_root . '/src/tasks/' . $task . '.php';
+                require_once PROJECT_ROOT . '/src/tasks/' . $task . '.php';
         }
 }
 

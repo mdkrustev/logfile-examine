@@ -38,7 +38,15 @@ class DisplayData
             $html .= "<tr>";
             $tdKey = $keyAsUri ? '<a href="/' . $key . '">'.$key.'</a>' : $key;
             $html .= "<td>$tdKey</td>";
-            $html .= "<td>$value</td>";
+            if(is_array($value)) {
+                $html .= "<td>";
+                foreach ($value as $item) {
+                    $html .= '<div>'.$item.'</div>';
+                }
+                $html .= "</td>";
+            } else {
+                $html .= "<td>$value</td>";
+            }
             $html .= "</tr>";
         }
         $html .= "</table>";

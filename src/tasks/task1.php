@@ -1,6 +1,6 @@
 <?php
+
 /**
- * @var $project_root
  * @var $style
  * @var $uri
  * @var $task
@@ -8,17 +8,18 @@
  */
 
 $ldr = new LogfileData();
+
 // Read data from log file and make array from all serials;
-$ldr->setLinesLogFile($project_root . 'logfiles/updatev12-access-pseudonymized.log', 10);
+$ldr->setLinesLogFile(PROJECT_ROOT . 'logfiles/updatev12-access-pseudonymized.log', SERIAL);
 
 // Get the first 10 from array that try to access the server the most
-$result = $ldr->getTheMostServerAccessAttempts(10);
+$result = LogicService::getTheMostServerAccessAttempts(10, $ldr->getFileLines());
 
 $type = $uri == '/task1-json' ? 'json' : 'html';
 
 /*
  *  Display data as:
- *  Html tabel
+ *  Html table
  *  http://localhost:8080/task1
  *  or
  *  Json string

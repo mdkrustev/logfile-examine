@@ -8,3 +8,8 @@ Accept: application/json
 GET http://localhost:8080/task2-json
 Accept: application/json
 
+###
+
+#Task 3
+GET http://localhost:8080/task3-json
+Accept: application/json
