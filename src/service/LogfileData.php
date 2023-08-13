@@ -54,15 +54,16 @@ class LogfileData
                                         } else {
                                             $specLine[] = '00:00:00:00:00:00';
                                         }
-                                        $specLine[] = $decompressedData;
+                                        //$specLine[] = $decompressedData;
                                 }
 
                             } else {
                                 if (!empty($lineElements[$element]))
                                     $specLine[] = $lineElements[$element];
                             }
-                            $lines[] = $specLine;
                         }
+
+                        $lines[] = $specLine;
                     }
                 } else {
                     $lines[] = $line;

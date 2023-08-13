@@ -14,8 +14,9 @@ class LogicService
     {
         $buffer = [];
         $ruleBreakers = [];
-
-        // return $fileLines;
+        //$fileLines = array_slice($fileLines, 0, 100);
+        //echo json_encode($fileLines);
+        //exit;
         foreach ($fileLines as $lineArray) {
             $serial = !empty($lineArray[0]) ? str_replace("serial=", "", $lineArray[0]) : null;
 
@@ -32,7 +33,7 @@ class LogicService
 
                 // There is more than one distinct mac address
                 if (sizeof($buffer[$serial]) > 1) {
-                    //if (!isset($ruleBreakers[$serial]))
+
                     $ruleBreakers[$serial] = [];
                     foreach ($buffer[$serial] as $bufferSerialMac) {
                         $ruleBreakers[$serial][] = $bufferSerialMac;
@@ -41,11 +42,15 @@ class LogicService
             }
         }
 
+        arsort($ruleBreakers);
+
+        return array_slice($ruleBreakers, 0, 10, true);
+
         //$ruleBreakers
 
 
         // Sort the array using the custom comparison function
-        uasort($ruleBreakers, function ($a, $b) {
+        /*uasort($ruleBreakers, function ($a, $b) {
             $countA = count($a);
             $countB = count($b);
             if ($countA === $countB)
@@ -59,8 +64,10 @@ class LogicService
             if($count >= 10) break;
             $mostRuleBreakers[$serial] = $ruleBreaker;
             $count++;
-        }
-        return $mostRuleBreakers;
+        }*/
+
+
+        //return $mostRuleBreakers;
     }
 
     /*
