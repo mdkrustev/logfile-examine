@@ -14,12 +14,17 @@ $tasks = [
     "task2" => "One license serial number should only be active on one physical device. Describe how
     you identify a single device as such. Provide a way to identify licenses that are installed
     on more than one device. What are the 10 license serials that violoate this rule the most?
-    On how many distinct devices are these licenses installed?",
+    On how many distinct devices are these licenses installed?<br><br>Solution: For every line from the log file 'specs' is a string and after decoding, it becomes an object array. It is necessary to create new array,
+    which is used to grouping mac addresses by license serial. When one license is installed on more than one device than from the grouped mac addresses array by license get only the keys which arrays are more than one element.
+    ",
 
     // Task 3
     "task3" => "Bonus: Based on the information given in the specs metadata, try to identify the
     different classes of hardware that are in use and provide the number of licenses that are
-    active on these types of hardware.",
+    active on these types of hardware.
+    <br><br>Solution:
+    First, active devices should be detected according to the l2tp parameter found in the array obtained by decoding 'specs'. It should be in 'UP' status. Licenses are then grouped by CPU for each device.
+    ",
 ];
 
 
@@ -27,10 +32,16 @@ $tasks = [
 const SPECS = 12;
 const SERIAL = 10;
 
+const SPECS_TYPE_MAC = 'specs_type_mac';
+const SPECS_TYPE_HARDWARE = 'specs_type_hardware';
+
 
 
 //Loading the css style from resources
 $style = file_get_contents(PROJECT_ROOT . 'resources/css/logfile-examine.css');
+$script = file_get_contents(PROJECT_ROOT . 'resources/js/logfile-examine.js');
+define("STYLE", $style);
+define("SCRIPT", $script);
 
 require PROJECT_ROOT . 'src/service/DisplayData.php';
 require PROJECT_ROOT . 'src/service/LogfileData.php';

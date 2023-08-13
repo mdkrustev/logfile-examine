@@ -7,10 +7,12 @@ class DisplayData
     {
         switch ($type) {
             case 'html':
-                echo "<style>$style</style>";
+
+                echo "<style>" . STYLE . "</style>";
+                echo "<script>" . SCRIPT . "</script>";
                 echo '<div class="results">';
                 if ($title) {
-                    echo '<div class="title"><a href="/">Tasks</a> - ' . $title . '</div>';
+                    echo '<div class="title"><a href="/">Back to the Tasks</a> / ' . ucfirst($title) . '</div>';
                 } else {
                     echo '<div class="title">Tasks</div>';
                 }
@@ -35,13 +37,16 @@ class DisplayData
             $html .= "<th>" . $th . "</th>";
         $html .= "</tr>";
         foreach ($data as $key => $value) {
+            $row++;
             $html .= "<tr>";
-            $tdKey = $keyAsUri ? '<a href="/' . $key . '">'.$key.'</a>' : $key;
-            $html .= "<td>$tdKey</td>";
-            if(is_array($value)) {
+            $tdKey = $keyAsUri ? '<a href="/' . $key . '">' . $key . '</a>' : $key;
+            $html .= "<td>
+       
+            $tdKey</td>";
+            if (is_array($value)) {
                 $html .= "<td>";
                 foreach ($value as $item) {
-                    $html .= '<div>'.$item.'</div>';
+                    $html .= '<div>' . $item . '</div>';
                 }
                 $html .= "</td>";
             } else {

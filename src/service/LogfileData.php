@@ -2,11 +2,13 @@
 
 class LogfileData
 {
+
+
     private $fileLines = [];
 
-    public function setLinesLogFile($logFilePath, $index = null, $limit = null)
+    public function setLinesLogFile($logFilePath, $indexes, $specs_type = null, $limit = null)
     {
-        ini_set('memory_limit', '5012M');
+        ini_set('memory_limit', '512M');
 
         $lines = [];
         $count = 0;
@@ -19,51 +21,47 @@ class LogfileData
                 $lineElements = explode(' ', $line);
 
                 //If index is defined than find the element of line elements
-                if ($index) {
+                if ($indexes) {
 
                     // Set one element
-                    if (!is_array($index)) {
-                        if (!empty($lineElements[$index]))
-                            $lines[] = $lineElements[$index];
+                    if (!is_array($indexes)) {
+                        if (!empty($lineElements[$indexes]))
+                            $lines[] = $lineElements[$indexes];
                     } else {
-
                         // Set many elements
                         $specLine = [];
-                        foreach ($index as $element) {
-                            //$empty_mac = 0;
+                        foreach ($indexes as $element) {
+
                             if ($element == SPECS) {
                                 if (!empty($lineElements[$element])) {
-                                    $specs = str_replace('specs=', '', $lineElements[$element]);
-                                    //try {
-                                        // Decode base64
-                                        $decodedData = base64_decode($specs);
 
-                                        // Decompress gzip
-                                        $decompressedData = gzdecode($decodedData);
-                                        $specsArray = json_decode($decompressedData, true);
+                                    //Set mac address as a string
+                                    if ($specs_type == SPECS_TYPE_MAC)
+                                        $specLine[] = $this->setMac($lineElements[$element]);
 
-                                        /**
-                                         * Set mac address as array string element
-                                         * After decoding base64 | gzip some of the mac addresses are empty string
-                                         * than mac address will be set as "00:00:00:00:00:00" value
-                                         */
+                                    //Set hardware specification as a string
+                                    if ($specs_type == SPECS_TYPE_HARDWARE) {
+                                        $activeHardwareClass = $this->setHardware($lineElements[$element]);
 
-                                        //Set mac address as array string element
-                                        if(!empty($specsArray['mac']) && $specsArray['mac'] != "null" && $specsArray['mac']) {
-                                            $specLine[] = $specsArray['mac'];
-                                        } else {
-                                            $specLine[] = '00:00:00:00:00:00';
-                                        }
-                                        //$specLine[] = $decompressedData;
+                                        if ($activeHardwareClass)
+                                            $specLine[] = $activeHardwareClass;
+                                    }
                                 }
-
                             } else {
                                 if (!empty($lineElements[$element]))
                                     $specLine[] = $lineElements[$element];
                             }
                         }
+                        if ($specs_type == SPECS_TYPE_HARDWARE) {
 
-                        $lines[] = $specLine;
+                            // If device is active than the second element of $specLine array should not be empty.
+                            if (!empty($specLine[1])) {
+                                $lines[$specLine[1]][] = $specLine[0];
+                            }
+
+                        } else {
+                            $lines[] = $specLine;
+                        }
                     }
                 } else {
                     $lines[] = $line;
@@ -79,6 +77,57 @@ class LogfileData
         }
     }
 
+
+    private function decodeBase64GzipJson($str)
+    {
+        // Decode base64
+        $decodedData = base64_decode($str);
+        // Decompress gzip
+        $decompressedData = gzdecode($decodedData);
+        return json_decode($decompressedData, true);
+    }
+
+    private function setMac($lineElement)
+    {
+
+        $specs = str_replace('specs=', '', $lineElement);
+        $specsArray = $this->decodeBase64GzipJson($specs);
+
+        /**
+         * Set mac address as array string element
+         * After decoding base64 | gzip some of the mac addresses are empty string
+         * than mac address will be set as "00:00:00:00:00:00" value
+         */
+
+        //Set mac address as array string element
+        if (!empty($specsArray['mac']) && $specsArray['mac'] != "null" && $specsArray['mac']) {
+            $specLine = $specsArray['mac'];
+        } else {
+            $specLine = '00:00:00:00:00:00';
+        }
+        return $specLine;
+
+    }
+
+
+    private function setHardware($lineElement)
+    {
+
+        $specs = str_replace('specs=', '', $lineElement);
+        $specsArray = $this->decodeBase64GzipJson($specs);
+
+        if (!empty($specsArray['l2tp']) && $specsArray['l2tp'] == 'UP') {
+
+            //$specLine = $specsArray['l2tp'];
+            $specLine = "";
+            //$specLine .= ' ' . 'machine:'.$specsArray['machine'].',';
+            //$specLine .= ' ' . 'mem:'. $specsArray['mem'].',';
+            //$specLine .= ' ' . 'disk_root:'. $specsArray['disk_root'].',';
+            //$specLine .= ' ' . 'disk_data:'. $specsArray['disk_data'].',';
+            $specLine .= ' ' . 'cpu:'.$specsArray['cpu'];
+            return $specLine;
+        }
+    }
 
     public function getFileLines()
     {
