@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $style
  * @var $uri
  * @var $task
  * @var $description
@@ -24,10 +23,7 @@ $type = $uri == '/task3-json' ? 'json' : 'html';
  *  http://localhost:8080/task3-json
  */
 
-//echo json_encode($ldr->getFileLines());
-//exit;
 $result = LogicService::getHardwareDeviceSerials($ldr->getFileLines());
-//echo json_encode($result);
-//exit;
-DisplayData::showResults($task, $description, $result, ["Active Devices - Hardware", "Number of licenses"], $type, $style);
+
+DisplayData::showResults($task, $description, $result, ["Active Devices - Hardware", "Number of licenses"], $type);
 exit;

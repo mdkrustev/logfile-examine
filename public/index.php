@@ -39,7 +39,10 @@ const SPECS_TYPE_HARDWARE = 'specs_type_hardware';
 
 //Loading the css style from resources
 $style = file_get_contents(PROJECT_ROOT . 'resources/css/logfile-examine.css');
+
+//Loading the js script from resources
 $script = file_get_contents(PROJECT_ROOT . 'resources/js/logfile-examine.js');
+
 define("STYLE", $style);
 define("SCRIPT", $script);
 

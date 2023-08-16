@@ -3,7 +3,7 @@
 
 class DisplayData
 {
-    public static function showResults($title, $description, $data, $tableHeaders = ['key', 'value'], $type = 'html', $style = null, $keyAsUri = false)
+    public static function showResults($title, $description, $data, $tableHeaders = ['key', 'value'], $type = 'html', $keyAsUri = false)
     {
         switch ($type) {
             case 'html':

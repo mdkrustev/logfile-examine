@@ -117,15 +117,7 @@ class LogfileData
         $specsArray = $this->decodeBase64GzipJson($specs);
 
         if (!empty($specsArray['l2tp']) && $specsArray['l2tp'] == 'UP') {
-
-            //$specLine = $specsArray['l2tp'];
-            $specLine = "";
-            //$specLine .= ' ' . 'machine:'.$specsArray['machine'].',';
-            //$specLine .= ' ' . 'mem:'. $specsArray['mem'].',';
-            //$specLine .= ' ' . 'disk_root:'. $specsArray['disk_root'].',';
-            //$specLine .= ' ' . 'disk_data:'. $specsArray['disk_data'].',';
-            $specLine .= ' ' . 'cpu:'.$specsArray['cpu'];
-            return $specLine;
+            return 'cpu:'.$specsArray['cpu'];
         }
     }
 

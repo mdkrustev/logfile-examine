@@ -1,6 +1,5 @@
 <?php
 /**
- * @var $style
  * @var $uri
  * @var $task
  * @var $description
@@ -26,5 +25,5 @@ $type = $uri == '/task2-json' ? 'json' : 'html';
 
 $result = LogicService::getRuleBreakerDevices($ldr->getFileLines());
 
-DisplayData::showResults($task, $description, $result, ["Serial", "Distinct devices (mac address)"], $type, $style);
+DisplayData::showResults($task, $description, $result, ["Serial", "Distinct devices (mac address)"], $type);
 exit;

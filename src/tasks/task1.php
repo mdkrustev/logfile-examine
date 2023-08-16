@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @var $style
  * @var $uri
  * @var $task
  * @var $description
@@ -25,4 +24,4 @@ $type = $uri == '/task1-json' ? 'json' : 'html';
  *  Json string
  *  http://localhost:8080/task1-json
  */
-DisplayData::showResults($task, $description, $result, ["License serial", "Number of attempts to access the server"], $type, $style);
+DisplayData::showResults($task, $description, $result, ["License serial", "Number of attempts to access the server"], $type);
